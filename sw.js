@@ -45,6 +45,11 @@ self.addEventListener('fetch', (event) => {
 
                 return fetch(event.request)
                     .then((webResponse) => {
+                        // Si la solicitud es para una página HTML y estamos offline, redirigir a offline.html
+                        if (event.request.headers.get('accept').includes('text/html') && !navigator.onLine) {
+                            return caches.match('offline.html');
+                        }
+
                         return caches.open(CACHE_NAME)
                             .then((cache) => {
                                 cache.put(event.request, webResponse.clone());
@@ -56,6 +61,7 @@ self.addEventListener('fetch', (event) => {
                 console.error('Fetch error:', error);
 
                 if (event.request.headers.get('accept').includes('text/html')) {
+                    // Manejar la solicitud de la página HTML cuando hay un error de red
                     return caches.match('offline.html');
                 }
             })
