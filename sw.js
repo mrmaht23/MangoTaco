@@ -1,4 +1,4 @@
-const CACHE_NAME = 'cache-v1';
+const CACHE_NAME = 'cache-v3';
 
 self.addEventListener('install', (event) => {
     const preCache = caches.open(CACHE_NAME)
@@ -10,7 +10,8 @@ self.addEventListener('install', (event) => {
                 'css/style.css',
                 'css/bootstrap.min.css',
                 'js/app.js',
-                'offline.html'
+                'offline.html',
+                'images/offline-imagen.jpg'
             ]);
         });
 
@@ -60,54 +61,3 @@ self.addEventListener('fetch', (event) => {
             })
     );
 });
-
-
-    self.addEventListener("DOMContentLoaded", function() {
-        var request = indexedDB.open("miBaseDeDatos", 1);
-
-        request.onupgradeneeded = function(event) {
-            var db = event.target.result;
-            db.createObjectStore("login", { keyPath: "email" });
-            db.createObjectStore("register", { keyPath: "email" });
-        };
-
-        request.onsuccess = function(event) {
-            var db = event.target.result;
-
-            var loginForm = document.getElementById("formLogin");
-            loginForm.addEventListener("submit", function(event) {
-                event.preventDefault();
-                
-                var email = document.getElementById("InputEmail").value;
-                var password = document.getElementById("InputPassword").value;
-
-                var transaction = db.transaction("login", "readwrite");
-                var store = transaction.objectStore("login");
-
-                store.put({ email: email, password: password });
-
-                loginForm.reset();
-            });
-
-            var registerForm = document.getElementById("formRegister");
-            registerForm.addEventListener("submit", function(event) {
-                event.preventDefault();
-
-                var name = document.getElementById("InputName").value;
-                var lastname = document.getElementById("InputLastname").value;
-                var email = document.getElementById("InputEmail1").value;
-                var password = document.getElementById("InputPassword1").value;
-
-                var transaction = db.transaction("register", "readwrite");
-                var store = transaction.objectStore("register");
-
-                store.put({ name: name, lastname: lastname, email: email, password: password });
-
-                registerForm.reset();
-            });
-        };
-
-        request.onerror = function(event) {
-            console.error("Error al abrir la base de datos:", event.target.error);
-        };
-    });
