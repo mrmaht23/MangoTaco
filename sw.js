@@ -1,4 +1,4 @@
-const CACHE_NAME = 'cache-v3';
+const CACHE_NAME = 'cache-v1';
 
 self.addEventListener('install', (event) => {
     const preCache = caches.open(CACHE_NAME)
@@ -56,7 +56,7 @@ self.addEventListener('fetch', (event) => {
                 console.error('Fetch error:', error);
 
                 if (event.request.headers.get('accept').includes('text/html')) {
-                    return caches.match('/offline.html');
+                    return caches.match('offline.html');
                 }
             })
     );
