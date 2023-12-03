@@ -11,6 +11,7 @@ self.addEventListener('install', (event) => {
                 'service.html',
                 'contact-us.html',
                 'js/app.js',
+                'js/indexedDB.js',
                 'offline.html',
                 'images/offline-imagen.jpg'
             ]);
